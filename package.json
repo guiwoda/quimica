@@ -1,0 +1,22 @@
+{
+  "name": "quimica",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "devDependencies": {
+    "bower-requirejs": "^1.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guiwoda/quimica.git"
+  },
+  "author": "Guido Contreras Woda <guiwoda@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guiwoda/quimica/issues"
+  },
+  "homepage": "https://github.com/guiwoda/quimica#readme"
+}

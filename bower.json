@@ -1,0 +1,30 @@
+{
+  "name": "quimica",
+  "version": "0.1.0",
+  "authors": [
+    "Guido Contreras Woda <guiwoda@gmail.com>"
+  ],
+  "description": "Simulador de la ley de gases",
+  "main": "main.js",
+  "moduleType": [],
+  "keywords": [
+    "quimica",
+    "untref"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "PhysicsJS": "physicsjs#~0.7.0",
+    "requirejs": "~2.1.20",
+    "jasmine-core": "jasmine#~2.3.4",
+    "pixi.js": "~3.0.8"
+  }
+}
