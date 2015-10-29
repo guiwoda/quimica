@@ -1,8 +1,3 @@
 {
-  "directory": "vendor",
-  "scripts": {
-    "preinstall": "./node_modules/.bin/bower-requirejs -c config.js",
-    "postinstall": "./node_modules/.bin/bower-requirejs -c config.js",
-    "postuninstall": "./node_modules/.bin/bower-requirejs -c config.js"
-  }
+  "directory": "vendor"
 }

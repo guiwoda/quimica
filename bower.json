@@ -22,9 +22,8 @@
     "tests"
   ],
   "dependencies": {
-    "PhysicsJS": "physicsjs#~0.7.0",
+    "PhysicsJS": "physicsjs#1.0.0-rc1",
     "requirejs": "~2.1.20",
-    "jasmine-core": "jasmine#~2.3.4",
-    "pixi.js": "~3.0.8"
+    "pixi.js": "pixi#~2.1.0"
   }
 }
