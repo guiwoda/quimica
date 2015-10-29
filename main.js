@@ -59,7 +59,8 @@ require(['physicsjs', 'pixi'], function(Physics, PIXI){
             world.add(Physics.body('circle', {
                 x: x,
                 y: y,
-                vx: 0.7,
+                vx: Math.random(),
+                vy: Math.random(),
                 radius: 40,
                 styles: {
                     fillStyle: '0x14546f',
