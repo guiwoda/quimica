@@ -51,28 +51,27 @@ require(['physicsjs', 'pixi'], function(Physics, PIXI){
             edgeBounce.setAABB(viewportBounds);
         }, true);
 
-        // create some bodies
-        world.add( Physics.body('circle', {
-            x: renderer.width * 0.4,
-            y: renderer.height * 0.3,
-            vx: 0.7,
-            radius: 40,
-            styles: {
-                fillStyle: '0x14546f',
-                angleIndicator: '#72240d'
-            }
-        }));
+        world.on('interact:poke', function(data){
+            addCircle(data.x, data.y);
+        });
 
-        world.add( Physics.body('circle', {
-            x: renderer.width * 0.7,
-            y: renderer.height * 0.3,
-            vx: -0.2,
-            radius: 40,
-            styles: {
-                fillStyle: '0x14546f',
-                angleIndicator: '#3b3e6b'
-            }
-        }));
+        function addCircle(x, y) {
+            world.add(Physics.body('circle', {
+                x: x,
+                y: y,
+                vx: 0.7,
+                radius: 40,
+                styles: {
+                    fillStyle: '0x14546f',
+                    angleIndicator: '#72240d'
+                }
+            }));
+        }
+
+        addCircle(renderer.width * 0.3, renderer.height * 0.3);
+        addCircle(renderer.width * 0.4, renderer.height * 0.4);
+        addCircle(renderer.width * 0.5, renderer.height * 0.5);
+        addCircle(renderer.width * 0.6, renderer.height * 0.6);
 
         world.add([
             Physics.behavior('interactive', { el: renderer.container }),
