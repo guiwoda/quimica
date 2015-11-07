@@ -15,13 +15,21 @@ require.config({
             name: "pixi",
             location: 'vendor/pixi.js/bin',
             main: "pixi"
+        },
+        {
+            name: "ractive",
+            location: 'vendor/ractive',
+            main: 'ractive'
         }
     ]
 });
 
 
-require(['physicsjs', 'pixi'], function(Physics, PIXI){
+require(['physicsjs', 'pixi', 'ractive'], function(Physics, PIXI, Ractive){
     window.PIXI = PIXI;
+    var ractive = new Ractive({
+
+    });
 
     Physics(function (world) {
         // bounds of the window
@@ -42,8 +50,10 @@ require(['physicsjs', 'pixi'], function(Physics, PIXI){
         });
 
         // constrain objects to these bounds
-        edgeBounce = Physics.behavior('edge-collision-detection', {
-            aabb: viewportBounds
+        var edgeBounce = Physics.behavior('edge-collision-detection', {
+            aabb: viewportBounds,
+            restitution: 1,
+            cof: 0
         });
 
         window.addEventListener('resize', function () {
@@ -55,6 +65,10 @@ require(['physicsjs', 'pixi'], function(Physics, PIXI){
             addCircle(data.x, data.y);
         });
 
+        world.on('collision:detected', function(){
+
+        });
+
         function addCircle(x, y) {
             world.add(Physics.body('circle', {
                 x: x,
@@ -62,9 +76,11 @@ require(['physicsjs', 'pixi'], function(Physics, PIXI){
                 vx: Math.random(),
                 vy: Math.random(),
                 radius: 40,
+                restitution: 1,
+                cof: 0,
                 styles: {
                     fillStyle: '0x14546f',
-                    angleIndicator: '#72240d'
+                    angleIndicator: '0x72240d'
                 }
             }));
         }

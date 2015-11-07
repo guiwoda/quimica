@@ -25,6 +25,7 @@
     "PhysicsJS": "physicsjs#1.0.0-rc1",
     "requirejs": "~2.1.20",
     "pixi.js": "pixi#~2.1.0",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "ractive": "~0.7.3"
   }
 }
