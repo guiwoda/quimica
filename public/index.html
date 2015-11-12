@@ -4,19 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Simulador de gases</title>
-    <!--<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
 </head>
-<body style="background-color: #ffd6a5">
-<!--
-<span style="position: fixed; top: 10px; right: 10px; width: 300px; height: 200px; background-color: rgba(255, 255, 255, 0.5)">
-    <ul>
-        <li>Cantidad: <span id="qty">4</span></li>
-        <li>Vel total: <span id="spd">0</span></li>
-        <li>Colisiones/seg: <span id="col">0</span></li>
-    </ul>
-</span>
--->
-<div style="width: 99vw; height: 99vh" id="viewport"></div>
+<body style="background-color: #ffd6a5; padding: 20px;">
+<div style="width: 50vw; height: 50vh; border: 2px solid black; display: inline-block" id="viewport"></div>
+<div id="info" class="well" style="position: fixed; top: 20px; left: 52vw; margin-left: 10px; width: 300px; height: 200px; background-color: rgba(255, 255, 255, 0.5)"></div>
 <script data-main="main" src="vendor/requirejs/require.js"></script>
 </body>
 </html>
