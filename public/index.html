@@ -5,10 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Simulador de gases</title>
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/c3/c3.min.css">
+    <style>
+        body {
+            background-color: #ffd6a5;
+            padding-top: 15px;
+        }
+        #info {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        #viewport {
+            border: 2px solid black;
+            height: 400px;
+            width: 400px;
+            resize: horizontal;
+            overflow-x: hidden;
+        }
+    </style>
 </head>
-<body style="background-color: #ffd6a5; padding: 20px;">
-<div style="width: 50vw; height: 50vh; border: 2px solid black; display: inline-block" id="viewport"></div>
-<div id="info" class="well" style="position: fixed; top: 20px; left: 52vw; margin-left: 10px; width: 300px; height: 200px; background-color: rgba(255, 255, 255, 0.5)"></div>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="viewport"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="info" class="well">{{>infotable}}</div>
+                </div>
+                <div class="col-xs-12">
+                    <div id="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script data-main="main" src="vendor/requirejs/require.js"></script>
+<script id="infotable" type="text/html">
+<table class="table">
+    <tr>
+        <th>Cantidad</th>
+        <th>Velocidad media</th>
+        <th>Colisiones/seg</th>
+        <th>Volúmen</th>
+        <th>Presión</th>
+        <th>Temperatura</th>
+        </tr>
+    <tr>
+        <td>
+            {{qty}} <button class="btn btn-success" on-click="add"><span class="glyphicon glyphicon-plus"></span></button></td>
+        <td>{{ spd }}</td>
+        <td>{{ col }}</td>
+        <td>{{ vol }}</td>
+        <td>{{ presion }}</td>
+        <td>{{ temp }}</td>
+    </tr>
+</table>
+</script>
 </body>
 </html>

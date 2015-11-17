@@ -26,6 +26,7 @@
     "requirejs": "~2.1.20",
     "pixi.js": "pixi#~2.1.0",
     "bootstrap": "~3.3.5",
-    "ractive": "~0.7.3"
+    "ractive": "~0.7.3",
+    "c3": "~0.4.10"
   }
 }

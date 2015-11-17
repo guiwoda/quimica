@@ -1,5 +1,17 @@
 require.config({
     baseUrl: './',
+    paths: {
+        "c3": "vendor/c3/c3.min",
+        "d3": "vendor/d3/d3.min"
+    },
+    shim: {
+        "c3": {
+            exports: "c3"
+        },
+        "d3": {
+            exports: "d3"
+        }
+    },
     packages: [
         {
             name: 'physicsjs',
@@ -25,31 +37,44 @@ require.config({
 });
 
 
-require(['physicsjs', 'pixi', 'ractive'], function(Physics, PIXI, Ractive){
-    var SPEED = Math.random(),
-        collisions = 0,
-        init = Date.now();
+require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive, c3){
+    var collisions = 0,
+        init = new Date();
 
     window.PIXI = PIXI;
     var ractive = new Ractive({
         el: document.getElementById('info'),
-        template:
-            '<ul class="list-unstyled">' +
-                '<li>Cantidad: {{qty}}</li>' +
-                '<li>Velocidad: <input type="number" value="{{spd}}" on-change="integrate"></li>' +
-                '<li>Colisiones/seg: {{col}}</li>' +
-            '</ul>',
+        template: '#infotable',
         data: {
-            qty: 4,
-            spd: SPEED,
-            col: 0
+            qty: 0,
+            spd: 0,
+            col: 0,
+            vol: 0,
+            presion: 0,
+            temp: 0
+        }
+    });
+
+    var chart = c3.generate({
+        bindto: '#chart',
+        data: {
+            columns: [
+                ['presión'],
+                ['temperatura']
+            ]
         }
     });
 
     Physics(function (world) {
+        var cont = document.getElementById('viewport');
+        var rect = cont.getBoundingClientRect();
+
+        ractive.set('vol', rect.width * rect.height);
+
         // bounds of the window
-        var viewportBounds = Physics.aabb(0, 0, window.innerWidth / 2, window.innerHeight / 2),
-            radius = window.innerWidth * 0.01;
+        var viewportBounds = Physics.aabb(0, 0, rect.width, rect.height),
+            radius = 10,
+            energy = 0;
 
         // create a renderer
         var renderer = Physics.renderer('pixi', {
@@ -71,29 +96,35 @@ require(['physicsjs', 'pixi', 'ractive'], function(Physics, PIXI, Ractive){
             cof: 0
         });
 
-        window.addEventListener('resize', function () {
-            viewportBounds = Physics.aabb(0, 0, window.innerWidth / 2, window.innerHeight / 2);
-            edgeBounce.setAABB(viewportBounds);
-        }, true);
+        var last = {};
+        var rerender = function () {
+            rect = cont.getBoundingClientRect();
+            if (rect.width != last.width || rect.height != last.height){
+                viewportBounds = Physics.aabb(0, 0, rect.width, rect.height);
+                edgeBounce.setAABB(viewportBounds);
+                ractive.set('vol', rect.width * rect.height);
+            }
+
+            last.width = rect.width;
+            last.height = rect.height;
+        };
+
+        setInterval(rerender, 200);
 
         world.on('interact:poke', function(data){
             addCircle(data.x, data.y);
-
-            ractive.add('qty');
         });
 
         world.on('collisions:detected', function(){
             collisions++;
         });
 
-        var multi = [-1, 1];
-
         function addCircle(x, y) {
             var circle = Physics.body('circle', {
                 x: x,
                 y: y,
-                vx: SPEED * (multi[Math.floor(Math.random() * 2)]),
-                vy: SPEED,
+                vx: Math.random(),
+                vy: Math.random(),
                 radius: radius,
                 restitution: 1,
                 cof: 0,
@@ -104,11 +135,12 @@ require(['physicsjs', 'pixi', 'ractive'], function(Physics, PIXI, Ractive){
             });
 
             world.add(circle);
-
-            ractive.on('integrate', function(){
-                circle.linearVelocity
-            });
+            ractive.add('qty');
         }
+
+        ractive.on('add', function(e){
+            addCircle(rect.width / 2, rect.height / 2);
+        });
 
         addCircle(renderer.width * 0.3, renderer.height * 0.3);
         addCircle(renderer.width * 0.4, renderer.height * 0.4);
@@ -128,11 +160,29 @@ require(['physicsjs', 'pixi', 'ractive'], function(Physics, PIXI, Ractive){
             world.step( time );
         });
 
+        var counter = 0;
         setInterval(function(){
-            ractive.set('col', collisions / ((Date.now() - init) / 1000));
+            ractive.set('spd', Math.round(100 * world._bodies.reduce(function(prev, body){
+                return prev + Math.sqrt(
+                    Math.pow(body.state.vel.x, 2) +
+                    Math.pow(body.state.vel.y, 2)
+                );
+            }, 0) / world._bodies.length));
+
+            counter++;
+            var col = collisions / ((Date.now() - init.getTime()) / 1000);
+            ractive.set('col', Math.round(col));
 
             collisions = 0;
-            init = Date.now();
+            init = new Date();
+
+            chart.flow({
+                columns: [
+                    ['presión', col],
+                    ['temperatura', col]
+                ],
+                length: counter > 20 ? 1 : 0
+            });
         }, 1000);
     });
 });
