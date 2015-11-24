@@ -55,12 +55,22 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
         }
     });
 
-    var chart = c3.generate({
-        bindto: '#chart',
+    var chartT = c3.generate({
+        bindto: '#chartT',
         data: {
             columns: [
-                ['presión'],
                 ['temperatura']
+            ],
+            colors: {
+                'temperatura': '#FF3300'
+            }
+        }
+    });
+    var chartP = c3.generate({
+        bindto: '#chartP',
+        data: {
+            columns: [
+                ['presión']
             ]
         }
     });
@@ -142,6 +152,20 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
             addCircle(rect.width / 2, rect.height / 2);
         });
 
+        ractive.on('slowDown', function(){
+            world._bodies.forEach(function(body){
+                body.state.vel.x = body.state.vel.x * 0.9;
+                body.state.vel.y = body.state.vel.y * 0.9;
+            });
+        });
+
+        ractive.on('accel', function(){
+            world._bodies.forEach(function(body){
+                body.state.vel.x = body.state.vel.x * 1.1;
+                body.state.vel.y = body.state.vel.y * 1.1;
+            });
+        });
+
         addCircle(renderer.width * 0.3, renderer.height * 0.3);
         addCircle(renderer.width * 0.4, renderer.height * 0.4);
         addCircle(renderer.width * 0.5, renderer.height * 0.5);
@@ -150,7 +174,7 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
         world.add([
             Physics.behavior('interactive', { el: renderer.container }),
             Physics.behavior('body-impulse-response'),
-            Physics.behavior('body-collision-detection'),
+            // Physics.behavior('body-collision-detection'),
             Physics.behavior('sweep-prune'),
             edgeBounce
         ]);
@@ -172,14 +196,24 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
             counter++;
             var col = collisions / ((Date.now() - init.getTime()) / 1000);
             ractive.set('col', Math.round(col));
+            ractive.set(
+                'presion',
+                (ractive.get('qty') * Math.pow(ractive.get('spd'), 2)) / ractive.get('vol')
+            );
+            ractive.set('temp', Math.pow(ractive.get('spd'), 2) * world._bodies.length / (2.494 * Math.pow(10, 4)));
 
             collisions = 0;
             init = new Date();
 
-            chart.flow({
+            chartT.flow({
                 columns: [
-                    ['presión', col],
-                    ['temperatura', col]
+                    ['temperatura', ractive.get('temp')]
+                ],
+                length: counter > 20 ? 1 : 0
+            });
+            chartP.flow({
+                columns: [
+                    ['presión', ractive.get('presion')],
                 ],
                 length: counter > 20 ? 1 : 0
             });

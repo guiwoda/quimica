@@ -35,7 +35,8 @@
                     <div id="info" class="well">{{>infotable}}</div>
                 </div>
                 <div class="col-xs-12">
-                    <div id="chart"></div>
+                    <div id="chartT"></div>
+                    <div id="chartP"></div>
                 </div>
             </div>
         </div>
@@ -54,10 +55,15 @@
         </tr>
     <tr>
         <td>
-            {{qty}} <button class="btn btn-success" on-click="add"><span class="glyphicon glyphicon-plus"></span></button></td>
-        <td>{{ spd }}</td>
+            {{qty}} <button class="btn btn-primary" on-click="add"><span class="glyphicon glyphicon-plus"></span></button>
+        </td>
+        <td>
+            {{ spd }}
+            <button class="btn btn-danger" on-click="slowDown"><span class="glyphicon glyphicon-minus"></span></button>
+            <button class="btn btn-success" on-click="accel"><span class="glyphicon glyphicon-plus"></span></button>
+        </td>
         <td>{{ col }}</td>
-        <td>{{ vol }}</td>
+        <td>{{ vol }} px<span style="vertical-align: super">2</span></td>
         <td>{{ presion }}</td>
         <td>{{ temp }}</td>
     </tr>
