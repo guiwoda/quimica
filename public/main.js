@@ -121,9 +121,9 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
 
         setInterval(rerender, 200);
 
-        world.on('interact:poke', function(data){
-            addCircle(data.x, data.y);
-        });
+        //world.on('interact:poke', function(data){
+        //    addCircle(data.x, data.y);
+        //});
 
         world.on('collisions:detected', function(){
             collisions++;
@@ -172,7 +172,7 @@ require(['physicsjs', 'pixi', 'ractive', 'c3'], function(Physics, PIXI, Ractive,
         addCircle(renderer.width * 0.6, renderer.height * 0.6);
 
         world.add([
-            Physics.behavior('interactive', { el: renderer.container }),
+            // Physics.behavior('interactive', { el: renderer.container }),
             Physics.behavior('body-impulse-response'),
             // Physics.behavior('body-collision-detection'),
             Physics.behavior('sweep-prune'),
